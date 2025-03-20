@@ -9,6 +9,7 @@
   ],
   "routes": [
     { "src": "/(favicon.ico|manifest.json)", "dest": "/$1" },
+    { "src": "/static/(.*)", "dest": "/static/$1" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
