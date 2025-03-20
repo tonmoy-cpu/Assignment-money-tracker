@@ -16,7 +16,6 @@ const App = () => {
   const [activeView, setActiveView] = useState("list")
 
   useEffect(() => {
-    // Check for user's preferred color scheme
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
     setIsDarkMode(prefersDark)
   }, [])
