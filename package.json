@@ -16,6 +16,7 @@
     "react-scripts": "5.0.1",
     "recharts": "^2.15.1",
     "tailwindcss-animate": "^1.0.7",
+    "vercel": "^41.4.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

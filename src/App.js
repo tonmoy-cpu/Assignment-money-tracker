@@ -5,6 +5,7 @@ import SearchBar from "./components/SearchBar"
 import MonthlyChart from "./components/MonthlyChart"
 import { motion, AnimatePresence } from "framer-motion"
 import { Sun, Moon, BarChart3, Wallet, Plus, Trash2, ArrowDownUp, Receipt } from "lucide-react"
+import "./App.css";
 
 const App = () => {
   const initialSpendings = JSON.parse(localStorage.getItem("spendings") || "[]")
