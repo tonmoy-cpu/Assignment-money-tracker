@@ -1,130 +1,178 @@
-import React, { useState, useEffect } from 'react';
-import { FaPlus } from 'react-icons/fa';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from "react"
+import { motion } from "framer-motion"
+import { Plus, Save, X } from "lucide-react"
 
-const SpendingForm = ({ onSave, editingSpending, onCancel, isDarkMode }) => {
+const SpendingForm = ({ onSave, editingSpending, onCancel, compact = false, isDarkMode }) => {
   const [formData, setFormData] = useState({
-    amount: '',
-    category: '',
-    description: '',
-    date: new Date().toISOString().split('T')[0],
-  });
+    amount: "",
+    category: "",
+    description: "",
+    date: new Date().toISOString().split("T")[0],
+  })
 
   useEffect(() => {
     if (editingSpending) {
-      setFormData(editingSpending);
+      setFormData(editingSpending)
     }
-  }, [editingSpending]);
+  }, [editingSpending])
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+    const { name, value } = e.target
+    setFormData({ ...formData, [name]: value })
+  }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (!formData.amount || !formData.category || !formData.description) {
-      alert('Please fill in all fields');
-      return;
+      alert("Please fill in all fields")
+      return
     }
-    onSave(formData);
+    onSave(formData)
     setFormData({
-      amount: '',
-      category: '',
-      description: '',
-      date: new Date().toISOString().split('T')[0],
-    });
-  };
+      amount: "",
+      category: "",
+      description: "",
+      date: new Date().toISOString().split("T")[0],
+    })
+  }
+
+  const categories = [
+    { value: "Food", label: "Food" },
+    { value: "Transport", label: "Transport" },
+    { value: "Entertainment", label: "Entertainment" },
+    { value: "Bills", label: "Bills" },
+    { value: "Shopping", label: "Shopping" },
+    { value: "Health", label: "Health" },
+    { value: "Other", label: "Other" },
+  ]
+
+  const inputClasses = `w-full p-2 rounded-md border ${
+    isDarkMode
+      ? "bg-slate-700 border-slate-600 text-white focus:ring-2 focus:ring-primary focus:border-transparent"
+      : "bg-white border-slate-300 text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent"
+  }`
 
   return (
-    <motion.form 
-      onSubmit={handleSubmit} 
-      className={`p-6 rounded-lg shadow-md ${isDarkMode ? 'bg-[#3C3D37] text-[#ECDFCC]' : 'bg-white text-[#493D9E]'}`}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
-    >
-      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-        <FaPlus /> {editingSpending ? 'Edit Spending' : 'Add Spending'}
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium">Amount</label>
-          <input
-            type="number"
-            name="amount"
-            value={formData.amount}
-            onChange={handleChange}
-            className={`mt-1 block w-full border rounded-md p-2 focus:outline-none focus:ring-2 ${isDarkMode ? 'bg-[#181C14] border-[#697565] text-[#ECDFCC] focus:ring-[#ECDFCC]' : 'bg-[#DAD2FF] border-[#493D9E] focus:ring-[#B2A5FF]'}`}
-            placeholder="e.g., 25.99"
-            step="0.01"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Category</label>
-          <select
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            className={`mt-1 block w-full border rounded-md p-2 focus:outline-none focus:ring-2 ${isDarkMode ? 'bg-[#181C14] border-[#697565] text-[#ECDFCC] focus:ring-[#ECDFCC]' : 'bg-[#DAD2FF] border-[#493D9E] focus:ring-[#B2A5FF]'}`}
-            required
-          >
-            <option value="">Select Category</option>
-            <option value="Food">Food</option>
-            <option value="Transport">Transport</option>
-            <option value="Entertainment">Entertainment</option>
-            <option value="Bills">Bills</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium">Description</label>
-          <input
-            type="text"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            className={`mt-1 block w-full border rounded-md p-2 focus:outline-none focus:ring-2 ${isDarkMode ? 'bg-[#181C14] border-[#697565] text-[#ECDFCC] focus:ring-[#ECDFCC]' : 'bg-[#DAD2FF] border-[#493D9E] focus:ring-[#B2A5FF]'}`}
-            placeholder="e.g., Lunch at Cafe"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Date</label>
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            className={`mt-1 block w-full border rounded-md p-2 focus:outline-none focus:ring-2 ${isDarkMode ? 'bg-[#181C14] border-[#697565] text-[#ECDFCC] focus:ring-[#ECDFCC]' : 'bg-[#DAD2FF] border-[#493D9E] focus:ring-[#B2A5FF]'}`}
-            required
-          />
-        </div>
-      </div>
-      <div className="mt-4 flex gap-2">
-        <motion.button
-          type="submit"
-          className={`flex items-center gap-2 px-4 py-2 rounded-md transition ${isDarkMode ? 'bg-[#697565] hover:bg-[#ECDFCC] hover:text-[#3C3D37]' : 'bg-[#493D9E] hover:bg-[#B2A5FF] text-white'}`}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <FaPlus /> {editingSpending ? 'Update' : 'Add'}
-        </motion.button>
-        {editingSpending && (
-          <motion.button
-            type="button"
-            onClick={onCancel}
-            className={`px-4 py-2 rounded-md transition ${isDarkMode ? 'bg-[#3C3D37] hover:bg-[#697565]' : 'bg-[#DAD2FF] hover:bg-[#B2A5FF]'}`}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Cancel
-          </motion.button>
-        )}
-      </div>
-    </motion.form>
-  );
-};
+    <div className={`bg-white dark:bg-slate-800 rounded-lg ${!compact && "shadow-md"} overflow-hidden`}>
+      <div className={compact ? "p-4" : "p-6"}>
+        <form onSubmit={handleSubmit}>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className={`${compact ? "text-lg" : "text-xl"} font-semibold flex items-center gap-2`}>
+              {editingSpending ? <Save className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
+              {editingSpending ? "Edit Spending" : "Add Spending"}
+            </h2>
+            {editingSpending && (
+              <button
+                type="button"
+                onClick={onCancel}
+                className="h-8 w-8 p-0 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
 
-export default SpendingForm;
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label htmlFor="amount" className="block text-sm font-medium">
+                Amount
+              </label>
+              <input
+                id="amount"
+                type="number"
+                name="amount"
+                value={formData.amount}
+                onChange={handleChange}
+                placeholder="e.g., 25.99"
+                step="0.01"
+                required
+                className={inputClasses}
+              />
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="category" className="block text-sm font-medium">
+                Category
+              </label>
+              <select
+                id="category"
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                required
+                className={inputClasses}
+              >
+                <option value="">Select Category</option>
+                {categories.map((category) => (
+                  <option key={category.value} value={category.value}>
+                    {category.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="space-y-2 md:col-span-2">
+              <label htmlFor="description" className="block text-sm font-medium">
+                Description
+              </label>
+              <input
+                id="description"
+                type="text"
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                placeholder="e.g., Lunch at Cafe"
+                required
+                className={inputClasses}
+              />
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="date" className="block text-sm font-medium">
+                Date
+              </label>
+              <input
+                id="date"
+                type="date"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
+                required
+                className={inputClasses}
+              />
+            </div>
+          </div>
+
+          <div className="mt-4 flex gap-2 justify-end">
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <button
+                type="submit"
+                className={`px-4 py-2 rounded-md font-medium flex items-center gap-1 ${
+                  isDarkMode ? "bg-primary text-white hover:bg-primary/90" : "bg-primary text-white hover:bg-primary/90"
+                }`}
+              >
+                {editingSpending ? <Save className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+                {editingSpending ? "Update" : "Add"}
+              </button>
+            </motion.div>
+            {editingSpending && !compact && (
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <button
+                  type="button"
+                  onClick={onCancel}
+                  className={`px-4 py-2 rounded-md font-medium ${
+                    isDarkMode
+                      ? "bg-slate-700 hover:bg-slate-600 text-white"
+                      : "bg-slate-200 hover:bg-slate-300 text-slate-700"
+                  }`}
+                >
+                  Cancel
+                </button>
+              </motion.div>
+            )}
+          </div>
+        </form>
+      </div>
+    </div>
+  )
+}
+
+export default SpendingForm
+
